@@ -13,10 +13,13 @@ help: ## Display help
 		else if (/^## .*$$/) {printf "  %s\n", substr($$1,4)} \
 		}' $(MAKEFILE_LIST)
 
+current_directory := $(shell pwd)
 build-all: ##
-	cd elasticsearch; docker build -t elasticsearch-img:7.14.1 .
-	cd logstash; docker build -t logstash-img:7.14.1 .
-	cd kibana; docker build -t kibana-img:7.14.1 .
+		echo ${current_directory}
+
+	cd ${current_directory}/elasticsearch; docker build -t elasticsearch-img:7.14.1 .
+	cd ${current_directory}/logstash; docker build -t logstash-img:7.14.1 .
+	cd ${current_directory}/kibana; docker build -t kibana-img:7.14.1 .
 	
 deploy-all: ##
 	docker compose up -d logstash
