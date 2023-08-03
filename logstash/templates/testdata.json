@@ -1,0 +1,13 @@
+{
+  "version": "1.1",
+  "host": "my-application",
+  "short_message": "An informational message",
+  "full_message": "This is an informational log message",
+  "timestamp": 1658432900,
+  "level": "info",
+  "_environment": "production",
+  "_application": "my-app",
+  "_user_id": 12345,
+  "_tags": ["info", "example"],
+  "_custom_field": "custom value"
+}
