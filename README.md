@@ -69,5 +69,5 @@ The Logstash configuration is stored in elasticsearch/config/elasticsearch.yml.
 The Kibana default configuration is stored in kibana/config/kibana.yml.
 
 ## How to configure Logstash
-The Logstash configuration is stored in logstash/config/logstash.yml.
+The Logstash configuration is stored in logstash/pipeline/logstash.conf.
 

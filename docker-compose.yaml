@@ -1,0 +1,63 @@
+version: '3.9'
+
+networks:
+  monitoring-network:
+    name: monitoring-network
+    driver: bridge
+
+volumes:
+  elasticsearch:
+
+services:
+  elasticsearch:
+    image: elasticsearch-img:7.14.1
+    environment:
+      # ES_JAVA_OPTS: "-Xmx8g -Xms8g"
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_USERNAME==${ELASTIC_USERNAME}
+      - discovery.type=${DISCOVERY_TYPE}
+      - TZ=${TZ}
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "0.0.0.0:9200:9200"
+      - "9300:9300"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail -u ${ELASTIC_USERNAME}:${ELASTIC_PASSWORD} http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - monitoring-network
+
+  logstash:
+    image: logstash-img:7.14.1
+    ports:
+      - "0.0.0.0:50000:50000/udp"
+      - "0.0.0.0:12201:12201/udp"
+    environment:
+      - LS_JAVA_OPTS=${LS_JAVA_OPTS}
+      - TZ=${TZ}
+    networks:
+      - monitoring-network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    image: kibana-img:7.14.1
+    ports:
+      - "0.0.0.0:5601:5601"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_USERNAME==${ELASTIC_USERNAME}
+      - TZ=${TZ}
+    healthcheck:
+      test: ["CMD", "curl", "-u", "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}", "-f", "http://localhost:5601"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - monitoring-network
+    depends_on:
+      - elasticsearch

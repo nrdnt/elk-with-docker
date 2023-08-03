@@ -17,10 +17,11 @@ build-all: ##
 	cd elasticsearch; docker build -t elasticsearch-img:7.14.1 .
 	cd logstash; docker build -t logstash-img:7.14.1 .
 	cd kibana; docker build -t kibana-img:7.14.1 .
-
+	
 deploy-all: ##
 	docker compose up -d logstash
 	docker compose up -d elasticsearch
 	docker compose up -d kibana
-
+	sleep 15 ;
+	cd bin ; bash create_pattern.sh 
 	
