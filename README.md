@@ -4,7 +4,7 @@ Docker Engine version 24.0.2 or newer
 Docker Compose version v2.18.1
 GNU Make version 4.3
 
-By default, the stack exposes the following ports:
+By default, the exposes the following ports:
 
 - 50000: Logstash UPD input
 - 12201: Logstash UPD input
