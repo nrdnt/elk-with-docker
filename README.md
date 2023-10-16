@@ -72,3 +72,14 @@ The Kibana default configuration is stored in kibana/config/kibana.yml.
 ## How to configure Logstash
 The Logstash configuration is stored in logstash/pipeline/logstash.conf.
 
+## Logging driver
+
+You can add the logging flag to the docker-compose.yml file of the containers whose logs you want to collect.
+
+```
+logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://<monitoring-vm-ip>:12201"
+
+```
